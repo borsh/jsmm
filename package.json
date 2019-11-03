@@ -2,24 +2,52 @@
 	"name": "jsmm",
 	"displayName": "jsmm",
 	"description": "jsmm support",
-	"version": "0.0.1",
+	"version": "0.1.0",
 	"engines": {
 		"vscode": "^1.39.0"
 	},
+	"author": {"name": "Boris Kazakov", "email": "boris.kazakov@gmail.com"},
+	"publisher": "kboris",
 	"categories": [
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:extension.helloWorld"
+		"onCommand:extension.jsmmEdit",
+		"onLanguage:json"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
 		"commands": [
 			{
-				"command": "extension.helloWorld",
-				"title": "Hello World"
+				"command": "extension.jsmmEdit",
+				"title": "Edit jsmm",
+				"icon" :{"dark": "icons/icon1.png", "light": "icons/icon1.png"}
 			}
-		]
+		],
+		"jsonValidation": [
+			{
+				"fileMatch": "*.jsmm",
+				"url": "./schemas/jsmm.json"
+			}
+		],
+		"languages": [
+			{
+				"id": "json",
+				"extensions": [
+					".jsmm",
+					".json"
+				]
+			}
+		],
+		"menus": {
+			"editor/title": [
+				{
+					"when": "resourceExtname == .jsmm",
+					"command": "extension.jsmmEdit",
+					"group": "navigation"
+				}
+			]
+		}
 	},
 	"scripts": {
 		"vscode:prepublish": "npm run compile",
