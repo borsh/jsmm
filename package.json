@@ -1,29 +1,74 @@
 {
 	"name": "jsmm",
-	"displayName": "jsmm",
-	"description": "jsmm support",
-	"version": "0.1.0",
+	"displayName": "js mindmap",
+	"description": "js mindmap editor",
+	"version": "0.2.0",
 	"engines": {
 		"vscode": "^1.39.0"
 	},
-	"author": {"name": "Boris Kazakov", "email": "boris.kazakov@gmail.com"},
+	"author": {
+		"name": "Boris Kazakov",
+		"email": "boris.kazakov@gmail.com"
+	},
 	"publisher": "kboris",
 	"categories": [
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:extension.jsmmEdit",
+		"onCommand:jsmmEdit.openView",
 		"onLanguage:json"
 	],
-	"main": "./out/extension.js",
+	"main": "./dist/extension.js",
 	"contributes": {
 		"commands": [
 			{
-				"command": "extension.jsmmEdit",
-				"title": "Edit jsmm",
-				"icon" :{"dark": "icons/icon1.png", "light": "icons/icon1.png"}
+				"command": "jsmmEdit.openView",
+				"title": "Open jsmm view",
+				"category": "JS mind map",
+				"icon": {
+					"dark": "icons/icon1.png",
+					"light": "icons/icon1.png"
+				}
+			},
+			{
+				"command": "jsmmEdit.addChild",
+				"title": "Add child element",
+				"category": "JS mind map"
+				
+			},
+			{
+				"command": "jsmmEdit.addSibling",
+				"title": "Add sibling element",
+				"category": "JS mind map"
+			},
+			{
+				"command": "jsmmEdit.remove",
+				"title": "Remove element",
+				"category": "JS mind map"
 			}
+
+
 		],
+		"keybindings" : [
+			{
+				"command": "jsmmEdit.addChild",
+				"key": "ctrl+enter",
+				"when": "jsmmActive"
+			},
+			{
+				"command": "jsmmEdit.addSibling",
+				"key": "shift+enter",
+				"when": "jsmmActive"
+			},
+			{
+				"command": "jsmmEdit.remove",
+				"key": "delete",
+				"when": "jsmmActive"
+			}
+	
+
+		],
+		
 		"jsonValidation": [
 			{
 				"fileMatch": "*.jsmm",
@@ -43,18 +88,36 @@
 			"editor/title": [
 				{
 					"when": "resourceExtname == .jsmm",
-					"command": "extension.jsmmEdit",
+					"command": "jsmmEdit.openView",
 					"group": "navigation"
 				}
-			]
+			],
+			"commandPalette": [{
+				"command": "jsmmEdit.addChild",
+				"when": "jsmmActive"
+			},{
+				"command": "jsmmEdit.addSibling",
+				"when": "jsmmActive"
+			},{
+				"command": "jsmmEdit.remove",
+				"when": "jsmmActive"
+			}]
 		}
 	},
+	
+	"scripts_old ": {
+		"vscode:prepublish": "npm run compile"
+	},
 	"scripts": {
-		"vscode:prepublish": "npm run compile",
-		"compile": "tsc -p ./",
-		"watch": "tsc -watch -p ./",
-		"pretest": "npm run compile",
+		"vscode:prepublish": "webpack --mode production",
+		"webpack": "webpack --mode development",
+		"webpack-dev": "webpack --mode development --watch",
+		"test-compile": "webpack --mode development",
+		"compile": "webpack --mode development",
+		"watch": "webpack --mode development --watch",
+		"pretest": "npm run webpack",
 		"test": "node ./out/test/runTest.js"
+
 	},
 	"devDependencies": {
 		"@types/glob": "^7.1.1",
@@ -63,8 +126,11 @@
 		"@types/vscode": "^1.39.0",
 		"glob": "^7.1.4",
 		"mocha": "^6.1.4",
-		"typescript": "^3.3.1",
+		"ts-loader": "^6.2.1",
 		"tslint": "^5.12.1",
-		"vscode-test": "^1.2.0"
+		"typescript": "^3.3.1",
+		"vscode-test": "^1.2.0",
+		"webpack": "^4.41.2",
+		"webpack-cli": "^3.3.10"
 	}
 }

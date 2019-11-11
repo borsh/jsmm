@@ -1,0 +1,42 @@
+{
+    "root": {
+        "children": {
+            "right": [
+                {
+                    "children": [
+                        {
+                            "name": "Style"
+                        },
+                        {
+                            "children": [
+                                {
+                                    "name": "Add"
+                                },
+                                {
+                                    "name": "Delete"
+                                },
+                                {
+                                    "name": "Hotkeys"
+                                }
+                            ],
+                            "name": "Commnads"
+                        },
+                        {
+                            "children": [
+                                {
+                                    "name": "Saving"
+                                }
+                            ],
+                            "name": "Change notification"
+                        },
+                        {
+                            "name": "Save diagram position on layout"
+                        }
+                    ],
+                    "name": "TODOs"
+                }
+            ]
+        },
+        "name": "JSMM thoughts"
+    }
+}

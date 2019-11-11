@@ -9,41 +9,26 @@ import * as glob from 'glob';
 class JSMMVisualEditor {
 	currentPanel: vscode.WebviewPanel | undefined = undefined;
 	currentDocument: vscode.TextDocument | undefined = undefined;
+	isActive = false;
 
 	constructor(public context: vscode.ExtensionContext) {
 
-		if (vscode.window.activeTextEditor) {
-			/*let document = vscode.window.activeTextEditor.document;
-			if (document.languageId === "json" && document.fileName.endsWith(".jsmm")) {
-				this.setDocument(document);
 
-			}*/
-		}
+		vscode.workspace.onDidCloseTextDocument((e) => {
+			if (jsmmVisualEditor && jsmmVisualEditor.currentDocument === e && jsmmVisualEditor.currentPanel) {
+				jsmmVisualEditor.close();
 
-		vscode.window.onDidChangeActiveTextEditor((textEditor) => {
-			/*if (textEditor) {
-				let document = textEditor.document;
-				if (document.languageId === "json" && document.fileName.endsWith(".jsmm")) {
-					this.setDocument(document);
-
-				}
-			}*/
-
+			}
 		});
-
-
 
 		vscode.workspace.onDidChangeTextDocument((e) => {
 			try {
-				if (this.currentPanel) {
-					console.log("setDocument");
+				if (this.currentPanel && vscode.window.activeTextEditor && vscode.window.activeTextEditor.document === e.document && e.document === this.currentDocument) {
 					let js = JSON.parse(e.document.getText());
 					this.currentPanel.webview.postMessage({ command: 'setJsonDocument', document: js });
 				}
 			}
 			catch (e) {
-
-				console.log("ERROR parsing json file");
 			}
 
 		});
@@ -64,31 +49,7 @@ class JSMMVisualEditor {
 		const jsfile2 = vscode.Uri.file(
 			glob.sync(extensionPath + "/static/js/main.*.chunk.js")[0]
 		);
-		/*
-		file:///home/borsh/work/jsmm/static/js/2.4ea33cf4.chunk.js
-		file:///home/borsh/work/jsmm/static/js/main.39c4138d.chunk.js
-		file:///home/borsh/work/jsmm/static/js/main.509f2e2d.chunk.js
-		file:///home/borsh/work/jsmm/static/js/main.b1be0452.chunk.js
-		file:///home/borsh/work/jsmm/static/js/main.b9ab685b.chunk.js
-		return `<!doctype html>
-		<html lang="en">
-		<head>
-			<meta charset="utf-7" />
-			<link rel="icon" href="/favicon.ico" />
-			file:///home/borsh/work/jsmm/static/js/main.8d1874b2.chunk.js
-			<meta name="viewport" content="width=device-width,initial-scale=1" />
-			<meta name="theme-color" content="#000000" />
-			<meta name="description" content="Web site created using create-react-app" />
-			<link rel="apple-touch-icon" href="logo192.png" />
-			<link rel="manifest" href="/manifest.json" />
-			<title>React App</title>
-			<link href="${panel.webview.asWebviewUri(cssfile)}" rel="stylesheet">
-		</head>
-		  <body>
-			<iframe width="1920" height="1080" src="http://localhost:3000"/>
-		  </body>
-		</html>
-		`;*/
+
 
 
 		return `<!doctype html>
@@ -99,6 +60,7 @@ class JSMMVisualEditor {
 		<link rel="icon" href="/favicon.ico" />
 		<meta name="viewport" content="width=device-width,initial-scale=1" />
 		<meta name="theme-color" content="#000000" />
+		<meta http-equiv="Content-Security-Policy" content="script-src 'unsafe-inline' ${panel.webview.cspSource};">
 		<meta name="description" content="Web site created using create-react-app" />
 		<link rel="apple-touch-icon" href="logo192.png" />
 		<link rel="manifest" href="/manifest.json" />
@@ -117,20 +79,49 @@ class JSMMVisualEditor {
 	}
 
 
+	addChild() {
+		if (this.currentPanel) {
+			console.log("Sending addChild command");
+			this.currentPanel.webview.postMessage({ command: 'addChild' });
+		}
+
+	}
+
+	addSibling() {
+		if (this.currentPanel) {
+			console.log("Sending addSibling command");
+			this.currentPanel.webview.postMessage({ command: 'addSibling' });
+		}
+
+	}
+
+
+	remove() {
+		if (this.currentPanel) {
+			console.log("Sending remove command");
+			this.currentPanel.webview.postMessage({ command: 'remove' });
+		}
+
+	}
 
 
 	setDocument(textDocument: vscode.TextDocument) {
-
 		this.currentDocument = textDocument;
 		if (!this.currentPanel) {
 
-			this.currentPanel = vscode.window.createWebviewPanel('catCoding', textDocument.fileName, vscode.ViewColumn.Beside, { enableScripts: true });
+			this.currentPanel = vscode.window.createWebviewPanel('jsmmView', textDocument.fileName, vscode.ViewColumn.Beside, { enableScripts: true });
 			this.currentPanel.webview.html = this.getWebviewContent(this.currentPanel, this.context.extensionPath);
-			// Our new command
+			// Our new command(
+			this.currentPanel.onDidChangeViewState((({ webviewPanel }) => {
+				this.isActive = webviewPanel.active;
+				console.log('Active', webviewPanel.active);
+				vscode.commands.executeCommand('setContext', "jsmmActive", this.isActive);
+
+				//this._activePreview = webviewPanel.active ? preview : undefined;
+			}));
 			this.currentPanel.webview.onDidReceiveMessage(message => {
 				switch (message.message) {
 					case 'getDocument':
-						console.log("getDocument");
 						try {
 
 							let js = JSON.parse(textDocument.getText());
@@ -152,9 +143,9 @@ class JSMMVisualEditor {
 						}
 				}
 			}, undefined, this.context.subscriptions);
-			this.currentPanel.onDidDispose( ()=> {
+			this.currentPanel.onDidDispose(() => {
 				this.currentPanel = undefined;
-			})
+			});
 		} else {
 			try {
 				let js = JSON.parse(textDocument.getText());
@@ -166,37 +157,63 @@ class JSMMVisualEditor {
 		}
 
 	}
+	close() {
+		if (this.currentPanel) {
+			this.currentPanel.dispose()
+			this.currentPanel = undefined;
+			this.currentDocument = undefined;
+		}
+	}
 }
 
 
-let jssVisualEditor : JSMMVisualEditor | undefined = undefined;
-// this method is called when your extension is activated
-// your extension is activated the very first time the command is executed
+let jsmmVisualEditor: JSMMVisualEditor | undefined = undefined;
 export function activate(context: vscode.ExtensionContext) {
 
-	jssVisualEditor = new JSMMVisualEditor(context);
+	jsmmVisualEditor = new JSMMVisualEditor(context);
 
-	console.log("Activating extension");
+	console.log("Activating extension!!!!!");
 
 	// Use the console to output diagnostic information (console.log) and errors (console.error)
 	// This line of code will only be executed once when your extension is activated
 	console.log('Congratulations, your extension "jsmm" is now active!');
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('extension.jsmmEdit', () => {
-		// The code you place here will be executed every time your command is executed
-		if (vscode.window.activeTextEditor && jssVisualEditor) {
+	let disposable = vscode.commands.registerCommand('jsmmEdit.openView', () => {
+		if (vscode.window.activeTextEditor && jsmmVisualEditor) {
 			let document = vscode.window.activeTextEditor.document;
-			jssVisualEditor.setDocument(document);
-
-
+			jsmmVisualEditor.setDocument(document);
 		}
-		// Display a message box to the user
 	});
 
 	context.subscriptions.push(disposable);
+
+	let addChildCmd = vscode.commands.registerCommand('jsmmEdit.addChild', () => {
+		if (jsmmVisualEditor && jsmmVisualEditor.isActive) {
+			jsmmVisualEditor.addChild();
+		}
+		// Display a message box to the user
+	});
+	context.subscriptions.push(addChildCmd);
+
+
+	let addSiblingCmd = vscode.commands.registerCommand('jsmmEdit.addSibling', () => {
+		if (jsmmVisualEditor && jsmmVisualEditor.isActive) {
+			jsmmVisualEditor.addSibling();
+		}
+	});
+
+
+	context.subscriptions.push(addSiblingCmd);
+
+	let removeCmd = vscode.commands.registerCommand('jsmmEdit.remove', () => {
+		if (jsmmVisualEditor && jsmmVisualEditor.isActive) {
+			jsmmVisualEditor.remove();
+		}
+	});
+
+
+	context.subscriptions.push(removeCmd);
+
 }
 
 // this method is called when your extension is deactivated
