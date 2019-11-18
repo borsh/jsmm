@@ -104,6 +104,27 @@ class JSMMVisualEditor {
 
 	}
 
+	moveUp() {
+		if (this.currentPanel) { this.currentPanel.webview.postMessage({ command: 'moveUp' }); }
+	}
+	moveDown() {
+		if (this.currentPanel) { this.currentPanel.webview.postMessage({ command: 'moveDown' }); }
+	}
+	moveLeft() {
+		if (this.currentPanel) { this.currentPanel.webview.postMessage({ command: 'moveLeft' }); }
+	}
+	moveRight() {
+		if (this.currentPanel) { this.currentPanel.webview.postMessage({ command: 'moveRight' }); }
+	}
+	cancel() {
+		if (this.currentPanel) { this.currentPanel.webview.postMessage({ command: 'cancel' }); }
+	}
+
+	edit() {
+		if (this.currentPanel) { this.currentPanel.webview.postMessage({ command: 'edit' }); }
+	}
+	
+
 
 	setDocument(textDocument: vscode.TextDocument) {
 		this.currentDocument = textDocument;
@@ -213,6 +234,42 @@ export function activate(context: vscode.ExtensionContext) {
 
 
 	context.subscriptions.push(removeCmd);
+
+	context.subscriptions.push( vscode.commands.registerCommand('jsmmEdit.moveUp', () => {
+		if (jsmmVisualEditor && jsmmVisualEditor.isActive) {
+			jsmmVisualEditor.moveUp();
+		}
+	}));
+	context.subscriptions.push( vscode.commands.registerCommand('jsmmEdit.moveDown', () => {
+		if (jsmmVisualEditor && jsmmVisualEditor.isActive) {
+			jsmmVisualEditor.moveDown();
+		}
+	}));
+	context.subscriptions.push( vscode.commands.registerCommand('jsmmEdit.moveLeft', () => {
+		if (jsmmVisualEditor && jsmmVisualEditor.isActive) {
+			jsmmVisualEditor.moveLeft();
+		}
+	}));
+	context.subscriptions.push( vscode.commands.registerCommand('jsmmEdit.moveRight', () => {
+		if (jsmmVisualEditor && jsmmVisualEditor.isActive) {
+			jsmmVisualEditor.moveRight();
+		}
+	}));
+
+	context.subscriptions.push( vscode.commands.registerCommand('jsmmEdit.cancel', () => {
+		if (jsmmVisualEditor && jsmmVisualEditor.isActive) {
+			jsmmVisualEditor.cancel();
+		}
+	}));
+	context.subscriptions.push( vscode.commands.registerCommand('jsmmEdit.edit', () => {
+		if (jsmmVisualEditor && jsmmVisualEditor.isActive) {
+			jsmmVisualEditor.edit();
+		}
+	}));
+
+
+
+
 
 }
 

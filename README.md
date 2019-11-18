@@ -16,6 +16,10 @@ Create file with .jsmm extension, json schema will be used and prompted. User bu
 
 ## Release Notes
 
+### 0.2.1
+
+Small usability improvements : arrow key navigation (default keybindings: left, right, top, bottom), cancel editing command (default keybinding : escape), edit current node command (default keybinding: f2)
+
 ### 0.2.0
 
 Added vscode commands: js mind map: add child (default keybinding ctrl+enter),js mind map: add sibiling (default keybinding shift+enter), js mind map:remove (default keybinding delete)

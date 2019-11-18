@@ -2,7 +2,7 @@
 	"name": "jsmm",
 	"displayName": "js mindmap",
 	"description": "js mindmap editor",
-	"version": "0.2.0",
+	"version": "0.2.1",
 	"engines": {
 		"vscode": "^1.39.0"
 	},
@@ -34,7 +34,6 @@
 				"command": "jsmmEdit.addChild",
 				"title": "Add child element",
 				"category": "JS mind map"
-				
 			},
 			{
 				"command": "jsmmEdit.addSibling",
@@ -45,11 +44,39 @@
 				"command": "jsmmEdit.remove",
 				"title": "Remove element",
 				"category": "JS mind map"
+			},
+			{
+				"command": "jsmmEdit.moveUp",
+				"title": "Select upper element",
+				"category": "JS mind map"
+			},
+			{
+				"command": "jsmmEdit.moveDown",
+				"title": "Select lower element",
+				"category": "JS mind map"
+			},
+			{
+				"command": "jsmmEdit.moveLeft",
+				"title": "Select left element",
+				"category": "JS mind map"
+			},
+			{
+				"command": "jsmmEdit.moveRight",
+				"title": "Select right element",
+				"category": "JS mind map"
+			},
+			{
+				"command": "jsmmEdit.cancel",
+				"title": "Cancel element addition",
+				"category": "JS mind map"
+			},
+			{
+				"command": "jsmmEdit.edit",
+				"title": "Edit selected element",
+				"category": "JS mind map"
 			}
-
-
 		],
-		"keybindings" : [
+		"keybindings": [
 			{
 				"command": "jsmmEdit.addChild",
 				"key": "ctrl+enter",
@@ -64,11 +91,39 @@
 				"command": "jsmmEdit.remove",
 				"key": "delete",
 				"when": "jsmmActive"
+			},
+			{
+				"command": "jsmmEdit.moveUp",
+				"key": "up",
+				"when": "jsmmActive"
+			},
+			{
+				"command": "jsmmEdit.moveDown",
+				"key": "down",
+				"when": "jsmmActive"
+			},
+			{
+				"command": "jsmmEdit.moveLeft",
+				"key": "left",
+				"when": "jsmmActive"
+			},
+			{
+				"command": "jsmmEdit.moveRight",
+				"key": "right",
+				"when": "jsmmActive"
+			},
+			{
+				"command": "jsmmEdit.cancel",
+				"key": "escape",
+				"when": "jsmmActive"
+			},
+			{
+				"command": "jsmmEdit.edit",
+				"key": "f2",
+				"when": "jsmmActive"
 			}
-	
 
 		],
-		
 		"jsonValidation": [
 			{
 				"fileMatch": "*.jsmm",
@@ -92,19 +147,46 @@
 					"group": "navigation"
 				}
 			],
-			"commandPalette": [{
-				"command": "jsmmEdit.addChild",
-				"when": "jsmmActive"
-			},{
-				"command": "jsmmEdit.addSibling",
-				"when": "jsmmActive"
-			},{
-				"command": "jsmmEdit.remove",
-				"when": "jsmmActive"
-			}]
+			"commandPalette": [
+				{
+					"command": "jsmmEdit.addChild",
+					"when": "jsmmActive"
+				},
+				{
+					"command": "jsmmEdit.addSibling",
+					"when": "jsmmActive"
+				},
+				{
+					"command": "jsmmEdit.remove",
+					"when": "jsmmActive"
+				},
+				{
+					"command": "jsmmEdit.moveUp",
+					"when": "jsmmActive"
+				},
+				{
+					"command": "jsmmEdit.moveDown",
+					"when": "jsmmActive"
+				},
+				{
+					"command": "jsmmEdit.moveLeft",
+					"when": "jsmmActive"
+				},
+				{
+					"command": "jsmmEdit.moveRight",
+					"when": "jsmmActive"
+				},
+				{
+					"command": "jsmmEdit.cancel",
+					"when": "jsmmActive"
+				},
+				{
+					"command": "jsmmEdit.edit",
+					"when": "jsmmActive"
+				}
+			]
 		}
 	},
-	
 	"scripts_old ": {
 		"vscode:prepublish": "npm run compile"
 	},
@@ -117,7 +199,6 @@
 		"watch": "webpack --mode development --watch",
 		"pretest": "npm run webpack",
 		"test": "node ./out/test/runTest.js"
-
 	},
 	"devDependencies": {
 		"@types/glob": "^7.1.1",
