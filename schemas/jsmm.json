@@ -7,6 +7,7 @@
                 "name": {
                     "type": "string"
                 },
+                "style" : {"$ref": "#/definitions/style"},
                 "children": {
                     "type": "object",
                     "properties": {
@@ -33,6 +34,7 @@
                 "name": {
                     "type": "string"
                 },
+                "style" : {"$ref": "#/definitions/style"},
                 "children": {
                     "type": "array",
                     "items": {
@@ -42,10 +44,55 @@
             },
             "required": ["name"]
 
+        },
+        "style" : {
+            "type" : "object",
+            "properties" : {
+                "fontSize": {
+                    "type" : "number"
+                },
+                "fontColor": {
+                    "type" : "string"
+                },
+                "backgroundColor": {
+                    "type" : "string"
+                },
+                "margin" : {
+                    "type" : "object", 
+                    "properties" : {
+                        "top" : {
+                            "type" : "number"
+                        },
+                        "bottom" : {
+                            "type" : "number"
+                        },
+                        "left" : {
+                            "type" : "number"
+                        },
+                        "right" : {
+                            "type" : "number"
+                        },
+                        "required" : ["top", "bottom", "letf", "right"]
+                    }
+                },
+                "borderRepeat" : {
+                    "type" : "number"
+                },
+                "rx" : {
+                    "type" : "number"
+                },
+                "strokeColor" : {
+                    "type" : "string"
+                },
+                "strokeWidth" : {
+                    "type" : "string"
+                }
+            }
         }
     },
     "type": "object",
     "properties": {
-        "root": {"$ref": "#/definitions/root"}
+        "root": {"$ref": "#/definitions/root"},
+        "defaultStyle" : {"$ref": "#/definitions/style"}
     }
 }

@@ -1,9 +1,8 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-import * as path from 'path';
 import * as glob from 'glob';
-
+import * as fs from 'fs';
 
 
 class JSMMVisualEditor {
@@ -123,7 +122,10 @@ class JSMMVisualEditor {
 	edit() {
 		if (this.currentPanel) { this.currentPanel.webview.postMessage({ command: 'edit' }); }
 	}
-	
+
+	setStyles(styles: object[]) {
+		if (this.currentPanel) { this.currentPanel.webview.postMessage({ command: "setStyles", styles }); }
+	}
 
 
 	setDocument(textDocument: vscode.TextDocument) {
@@ -133,9 +135,17 @@ class JSMMVisualEditor {
 			this.currentPanel = vscode.window.createWebviewPanel('jsmmView', textDocument.fileName, vscode.ViewColumn.Beside, { enableScripts: true });
 			this.currentPanel.webview.html = this.getWebviewContent(this.currentPanel, this.context.extensionPath);
 			// Our new command(
+			/*vscode.window.onDidChangeWindowState((e)=> {
+				console.log(`onDidChangeWindow ${e}`);
+			})*/
+
 			this.currentPanel.onDidChangeViewState((({ webviewPanel }) => {
 				this.isActive = webviewPanel.active;
 				console.log('Active', webviewPanel.active);
+				if (webviewPanel.active) {
+					webviewPanel.reveal(webviewPanel.viewColumn, false);
+					//if (this.currentPanel) this.currentPanel.webview
+				}
 				vscode.commands.executeCommand('setContext', "jsmmActive", this.isActive);
 
 				//this._activePreview = webviewPanel.active ? preview : undefined;
@@ -180,7 +190,7 @@ class JSMMVisualEditor {
 	}
 	close() {
 		if (this.currentPanel) {
-			this.currentPanel.dispose()
+			this.currentPanel.dispose();
 			this.currentPanel = undefined;
 			this.currentDocument = undefined;
 		}
@@ -188,23 +198,37 @@ class JSMMVisualEditor {
 }
 
 
+
+
 let jsmmVisualEditor: JSMMVisualEditor | undefined = undefined;
 export function activate(context: vscode.ExtensionContext) {
+	let styles = vscode.workspace.getConfiguration().get("jsmm.definedStyles") as object[];
+	if (styles.length === 0) {
 
+		let defaultSyles = JSON.parse(fs.readFileSync(context.extensionPath + "/static/defaultStyles.json").toString());
+
+		styles = defaultSyles['styles'];
+	}
 	jsmmVisualEditor = new JSMMVisualEditor(context);
 
-	console.log("Activating extension!!!!!");
-
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "jsmm" is now active!');
 
 	let disposable = vscode.commands.registerCommand('jsmmEdit.openView', () => {
 		if (vscode.window.activeTextEditor && jsmmVisualEditor) {
 			let document = vscode.window.activeTextEditor.document;
 			jsmmVisualEditor.setDocument(document);
+			jsmmVisualEditor.setStyles(styles as object[]);
+
 		}
 	});
+
+
+	vscode.workspace.onDidChangeConfiguration(() => {
+		let styles = vscode.workspace.getConfiguration().get("jsmm.definedStyles") as object[];
+		if (jsmmVisualEditor) {
+			jsmmVisualEditor.setStyles(styles as object[]);
+		}
+
+	})
 
 	context.subscriptions.push(disposable);
 
@@ -235,38 +259,37 @@ export function activate(context: vscode.ExtensionContext) {
 
 	context.subscriptions.push(removeCmd);
 
-	context.subscriptions.push( vscode.commands.registerCommand('jsmmEdit.moveUp', () => {
+	context.subscriptions.push(vscode.commands.registerCommand('jsmmEdit.moveUp', () => {
 		if (jsmmVisualEditor && jsmmVisualEditor.isActive) {
 			jsmmVisualEditor.moveUp();
 		}
 	}));
-	context.subscriptions.push( vscode.commands.registerCommand('jsmmEdit.moveDown', () => {
+	context.subscriptions.push(vscode.commands.registerCommand('jsmmEdit.moveDown', () => {
 		if (jsmmVisualEditor && jsmmVisualEditor.isActive) {
 			jsmmVisualEditor.moveDown();
 		}
 	}));
-	context.subscriptions.push( vscode.commands.registerCommand('jsmmEdit.moveLeft', () => {
+	context.subscriptions.push(vscode.commands.registerCommand('jsmmEdit.moveLeft', () => {
 		if (jsmmVisualEditor && jsmmVisualEditor.isActive) {
 			jsmmVisualEditor.moveLeft();
 		}
 	}));
-	context.subscriptions.push( vscode.commands.registerCommand('jsmmEdit.moveRight', () => {
+	context.subscriptions.push(vscode.commands.registerCommand('jsmmEdit.moveRight', () => {
 		if (jsmmVisualEditor && jsmmVisualEditor.isActive) {
 			jsmmVisualEditor.moveRight();
 		}
 	}));
 
-	context.subscriptions.push( vscode.commands.registerCommand('jsmmEdit.cancel', () => {
+	context.subscriptions.push(vscode.commands.registerCommand('jsmmEdit.cancel', () => {
 		if (jsmmVisualEditor && jsmmVisualEditor.isActive) {
 			jsmmVisualEditor.cancel();
 		}
 	}));
-	context.subscriptions.push( vscode.commands.registerCommand('jsmmEdit.edit', () => {
+	context.subscriptions.push(vscode.commands.registerCommand('jsmmEdit.edit', () => {
 		if (jsmmVisualEditor && jsmmVisualEditor.isActive) {
 			jsmmVisualEditor.edit();
 		}
 	}));
-
 
 
 

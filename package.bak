@@ -1,0 +1,11 @@
+"scripts": {
+		"vscode:prepublish": "webpack --mode production",
+		"webpack": "webpack --mode development",
+		"webpack-dev": "webpack --mode development --watch",
+		"test-compile": "webpack --mode development",
+		"compile": "webpack --mode development",
+		"watch": "webpack --mode development --watch",
+		"pretest": "npm run webpack",
+		"test": "node ./out/test/runTest.js"
+	},
+	

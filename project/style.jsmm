@@ -1,0 +1,126 @@
+{
+    "root": {
+        "children": {
+            "left": [
+                {
+                    "children": [
+                        {
+                            "name": "title"
+                        },
+                        {
+                            "children": [
+                                {
+                                    "children": [
+                                        {
+                                            "name": "size"
+                                        }
+                                    ],
+                                    "name": "font"
+                                },
+                                {
+                                    "children": [
+                                        {
+                                            "name": "font"
+                                        },
+                                        {
+                                            "name": "stroke"
+                                        },
+                                        {
+                                            "name": "fill"
+                                        }
+                                    ],
+                                    "name": "color"
+                                },
+                                {
+                                    "name": "margin"
+                                },
+                                {
+                                    "name": "icon"
+                                },
+                                {
+                                    "name": "border"
+                                }
+                            ],
+                            "name": "properties"
+                        }
+                    ],
+                    "name": "description"
+                }
+            ],
+            "right": [
+                {
+                    "children": [
+                        {
+                            "children": [
+                                {
+                                    "name": "name"
+                                }
+                            ],
+                            "name": "node"
+                        },
+                        {
+                            "name": "description"
+                        }
+                    ],
+                    "name": "document"
+                },
+                {
+                    "children": [
+                        {
+                            "name": "hotkey"
+                        },
+                        {
+                            "name": "description"
+                        }
+                    ],
+                    "name": "ide"
+                },
+                {
+                    "children": [
+                        {
+                            "children": [
+                                {
+                                    "children": [
+                                        {
+                                            "name": "description"
+                                        },
+                                        {
+                                            "name": "hotkey"
+                                        }
+                                    ],
+                                    "name": "styles"
+                                }
+                            ],
+                            "name": "settings"
+                        },
+                        {
+                            "children": [
+                                {
+                                    "children": [
+                                        {
+                                            "children": [
+                                                {
+                                                    "children": [
+                                                        {
+                                                            "name": "description"
+                                                        }
+                                                    ],
+                                                    "name": "assign"
+                                                }
+                                            ],
+                                            "name": "pass"
+                                        }
+                                    ],
+                                    "name": "hotkey"
+                                }
+                            ],
+                            "name": "visualeditor"
+                        }
+                    ],
+                    "name": "workflow"
+                }
+            ]
+        },
+        "name": "Style"
+    }
+}

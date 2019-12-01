@@ -1,0 +1,68 @@
+{
+    "styles": [
+        {
+            "name": "Root",
+            "fontSize": 22
+        },
+        {
+            "name": "Branch 1",
+            "fontSize": 20,
+            "backgroundColor": "#AA7939",
+            "fontColor": "#F2C892",
+            "strokeColor": "#623A06",
+            "strokeWidth": "3",
+            "margin": {
+                "bottom": 10,
+                "top": 10,
+                "left": 10,
+                "right": 10
+            },
+            "rx": 10
+        },
+        {
+            "name": "Branch 2",
+            "fontSize": 20,
+            "backgroundColor": "#AA8D39",
+            "fontColor": "#F2D992",
+            "strokeColor": "#624B06",
+            "strokeWidth": "3",
+            "margin": {
+                "bottom": 10,
+                "top": 10,
+                "left": 10,
+                "right": 10
+            },
+            "rx": 10
+        },
+        {
+            "name": "Branch 3",
+            "fontSize": 20,
+            "backgroundColor": "#333577",
+            "fontColor": "#7071A9",
+            "strokeColor": "#0E0F44",
+            "strokeWidth": "3",
+            "margin": {
+                "bottom": 10,
+                "top": 10,
+                "left": 10,
+                "right": 10
+            },
+            "rx": 10
+        },
+        {
+            "name": "Branch 4",
+            "fontSize": 20,
+            "backgroundColor": "#29615D",
+            "fontColor": "#61839B",
+            "strokeColor": "#08283F",
+            "strokeWidth": "3",
+            "margin": {
+                "bottom": 10,
+                "top": 10,
+                "left": 10,
+                "right": 10
+            },
+            "rx": 10
+        }
+    ]
+}

@@ -2,7 +2,7 @@
 	"name": "jsmm",
 	"displayName": "js mindmap",
 	"description": "js mindmap editor",
-	"version": "0.2.1",
+	"version": "0.3.0",
 	"engines": {
 		"vscode": "^1.39.0"
 	},
@@ -18,7 +18,7 @@
 		"onCommand:jsmmEdit.openView",
 		"onLanguage:json"
 	],
-	"main": "./dist/extension.js",
+	"main": "./out/extension.js",
 	"contributes": {
 		"commands": [
 			{
@@ -90,26 +90,6 @@
 			{
 				"command": "jsmmEdit.remove",
 				"key": "delete",
-				"when": "jsmmActive"
-			},
-			{
-				"command": "jsmmEdit.moveUp",
-				"key": "up",
-				"when": "jsmmActive"
-			},
-			{
-				"command": "jsmmEdit.moveDown",
-				"key": "down",
-				"when": "jsmmActive"
-			},
-			{
-				"command": "jsmmEdit.moveLeft",
-				"key": "left",
-				"when": "jsmmActive"
-			},
-			{
-				"command": "jsmmEdit.moveRight",
-				"key": "right",
 				"when": "jsmmActive"
 			},
 			{
@@ -185,19 +165,132 @@
 					"when": "jsmmActive"
 				}
 			]
+		},
+		"configurationDefaults": {
+			"jsmm.definedStyles" : [
+				{
+					"name": "Root",
+					"fontSize": 22
+				},
+				
+				{
+					"name": "Branch 1",
+					"fontSize": 20,
+					"backgroundColor": "#AA7939",
+					"fontColor": "#F2C892",
+					"strokeColor": "#623A06",
+					"strokeWidth": "3",
+					"margin": {"bottom": 10, "top": 10,"left": 10, "right": 10},
+					"rx": 10
+				},
+				{
+					"name": "Branch 2",
+					"fontSize": 20,
+					"backgroundColor": "#AA8D39",
+					"fontColor": "#F2D992",
+					"strokeColor": "#624B06",
+					"strokeWidth": "3",
+					"margin": {"bottom": 10, "top": 10,"left": 10, "right": 10},
+					"rx": 10
+		
+				},
+				{
+					"name": "Branch 3",
+					"fontSize": 20,
+					"backgroundColor": "#333577",
+					"fontColor": "#7071A9",
+					"strokeColor": "#0E0F44",
+					"strokeWidth": "3",
+					"margin": {"bottom": 10, "top": 10,"left": 10, "right": 10},
+					"rx": 10
+				},
+				{
+					"name": "Branch 4",
+					"fontSize": 20,
+					"backgroundColor": "#29615D",
+					"fontColor": "#61839B",
+					"strokeColor": "#08283F",
+					"strokeWidth": "3",
+					"margin": {"bottom": 10, "top": 10,"left": 10, "right": 10},
+					"rx": 10
+				}
+			]
+		},
+		"configuration": {
+			"title": "JSMM",
+			"properties": {
+				"jsmm.definedStyles" : {
+					"type" : "array",
+					"items": {
+						"type":"object",
+						"properties": {
+							"name" : {
+								"type":"string"
+							},
+							"fontSize": {
+								"type" : "number"
+							},
+							"fontColor": {
+								"type" : "string"
+							},
+							"backgroundColor": {
+								"type" : "string"
+							},
+							"margin" : {
+								"type" : "object", 
+								"properties" : {
+									"top" : {
+										"type" : "number"
+									},
+									"bottom" : {
+										"type" : "number"
+									},
+									"left" : {
+										"type" : "number"
+									},
+									"right" : {
+										"type" : "number"
+									}
+
+								},
+								"required" : ["top", "bottom", "left", "right"]
+							},
+							"borderRepeat" : {
+								"type" : "number"
+							},
+							"rx" : {
+								"type" : "number"
+							},
+							"strokeColor" : {
+								"type" : "string"
+							},
+							"strokeWidth" : {
+								"type" : "string"
+							}
+						
+						},
+						"required": ["name"]
+
+					},
+					"description": "Predefined mind map element styles"
+					
+
+				}
+			}
+			
+
 		}
+
 	},
 	"scripts_old ": {
 		"vscode:prepublish": "npm run compile"
 	},
 	"scripts": {
 		"vscode:prepublish": "webpack --mode production",
-		"webpack": "webpack --mode development",
-		"webpack-dev": "webpack --mode development --watch",
-		"test-compile": "webpack --mode development",
-		"compile": "webpack --mode development",
-		"watch": "webpack --mode development --watch",
-		"pretest": "npm run webpack",
+
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"pretest": "npm run compile",
 		"test": "node ./out/test/runTest.js"
 	},
 	"devDependencies": {
@@ -217,4 +310,5 @@
 	"repository": {
 		"url": "https://github.com/borsh/jsmm.git"
 	}
+	
 }
