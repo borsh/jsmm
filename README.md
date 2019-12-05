@@ -13,7 +13,7 @@ Mind map elements
 
 ## Configuration
 
-You can configure styles, which will be availabe in the visusal editor in the configuration file. Edit the "jsmm.definedStyles" section :
+You can configure styles in the configuration file. They will be availabe in the visusal editor. You can also set hotkey for style activation. Edit the "jsmm.definedStyles" section :
 
 sample settings.json section:
 
@@ -34,7 +34,8 @@ sample settings.json section:
             },
             "rx": 10,
             "strokeColor": "#0000FF",
-            "strokeWidth": "2"
+            "strokeWidth": "2",
+            "hotkey" : "ctrl+alt+1"
         },
         {
             "name": "Predefined style 2",
@@ -49,6 +50,7 @@ sample settings.json section:
             },
             "rx": 5,
             "strokeColor": "#black",
+            "hotkey" : "ctrl+alt+2"
         }
     ]
 }
@@ -66,6 +68,9 @@ Then in the visual editor you have the following avaliable styles:
 Create file with .jsmm extension, json schema will be used and prompted. User button in the toolbar or command "Open jsmm view" to toggle interactive editing. 
 
 ## Release Notes
+
+### [0.3.1] 
+Added style hotkeys functionality, each style defined in config may have hotkey propery, which allows setting this style for the current element by pressing hotkey.
 
 ### 0.3.0
 

@@ -17,7 +17,9 @@
                 "left": 10,
                 "right": 10
             },
-            "rx": 10
+            "rx": 10,
+            "hotkey" : "ctrl+alt+1"
+
         },
         {
             "name": "Branch 2",
@@ -32,7 +34,8 @@
                 "left": 10,
                 "right": 10
             },
-            "rx": 10
+            "rx": 10,
+            "hotkey" : "ctrl+alt+2"
         },
         {
             "name": "Branch 3",
@@ -47,7 +50,8 @@
                 "left": 10,
                 "right": 10
             },
-            "rx": 10
+            "rx": 10,
+            "hotkey" : "ctrl+alt+3"
         },
         {
             "name": "Branch 4",
@@ -62,7 +66,8 @@
                 "left": 10,
                 "right": 10
             },
-            "rx": 10
+            "rx": 10,
+            "hotkey" : "ctrl+alt+4"
         }
     ]
 }

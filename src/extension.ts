@@ -126,6 +126,9 @@ class JSMMVisualEditor {
 	setStyles(styles: object[]) {
 		if (this.currentPanel) { this.currentPanel.webview.postMessage({ command: "setStyles", styles }); }
 	}
+	focus() {
+		if (this.currentPanel) {this.currentPanel.webview.postMessage({ command: "focus" }); }
+	}
 
 
 	setDocument(textDocument: vscode.TextDocument) {
@@ -164,7 +167,8 @@ class JSMMVisualEditor {
 						}
 						break;
 					case 'setDocument':
-						console.log("Received new document", JSON.stringify(message.document));
+						
+						
 						if (this.currentDocument) {
 							let firstline = this.currentDocument.lineAt(0);
 							let lastline = this.currentDocument.lineAt(this.currentDocument.lineCount - 1);
@@ -172,6 +176,7 @@ class JSMMVisualEditor {
 							we.replace(this.currentDocument.uri, new vscode.Range(0, firstline.range.start.character, this.currentDocument.lineCount - 1, lastline.range.end.character), JSON.stringify(message.document, null, 4));
 							vscode.workspace.applyEdit(we);
 						}
+						this.focus();
 				}
 			}, undefined, this.context.subscriptions);
 			this.currentPanel.onDidDispose(() => {

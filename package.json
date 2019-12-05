@@ -266,6 +266,9 @@
 							},
 							"strokeWidth" : {
 								"type" : "string"
+							},
+							"hotkey" : {
+								"type" : "string"
 							}
 						
 						},
